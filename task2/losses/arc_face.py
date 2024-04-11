@@ -5,8 +5,7 @@ from torch import nn
 
 
 class ArcFaceLoss():
-    def __init__(self, num_classes, margin=0.5, scale=64):
-        self.num_classes = num_classes
+    def __init__(self, margin=0.5, scale=64):
         self.margin = margin
         self.scale = scale
         self.threshold = torch.cos(torch.tensor(pi - margin))
@@ -29,7 +28,7 @@ class ArcFaceLoss():
                                 cos_t - self.safe_margin)
 
         # replace true logits with margin logits
-        mask = (torch.arange(self.num_classes, dtype=int).to(y_true.device) == torch.unsqueeze(y_true, 1))
+        mask = (torch.arange(y_pred.shape[-1], dtype=int).to(y_true.device) == torch.unsqueeze(y_true, 1))
         logits = torch.where(mask,
                              cos_t_margin,
                              cos_t)
