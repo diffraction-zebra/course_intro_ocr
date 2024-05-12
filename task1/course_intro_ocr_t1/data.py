@@ -156,8 +156,8 @@ class MidvPackage:
         gt_root = root_path / cls.GT_SUBDIR
         img_root = root_path / cls.IMG_SUBDIR
 
-        gt_paths = list(gt_root.rglob("*.json"))
-        img_paths = [x for x in list(img_root.rglob("*")) if not x.is_dir() and not '.ipynb' in str(x)]
+        gt_paths = [x for x in gt_root.rglob("*.json") if not x.stem[0].isnumeric()]
+        img_paths = [x for x in list(img_root.rglob("*")) if not x.is_dir() and not '.ipynb' in str(x) if not x.stem[0].isnumeric()]
 
         key = lambda x: str(x.parent / x.stem)
         key_to_img, key_to_gt = dict(), dict()
@@ -172,7 +172,7 @@ class MidvPackage:
         for k, img_path in key_to_img.items():
             gt_path = key_to_gt[k]
             items.append(DataItem(gt_path=gt_path, img_path=img_path))
-        return [it for it in items if it.is_correct()]
+        return items
 
     @classmethod
     def collect_template(cls, root_path: Path) -> DataItem:
