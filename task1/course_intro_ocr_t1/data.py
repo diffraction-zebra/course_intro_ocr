@@ -4,12 +4,13 @@ from pathlib import Path
 from typing import List
 import warnings
 
+from tqdm import tqdm
 import matplotlib.pyplot as plt
 from matplotlib import patches
 import numpy as np
 from PIL import Image
 
-from .metrics import iou_relative_quads
+from metrics import iou_relative_quads
 
 
 @dataclass
@@ -133,7 +134,10 @@ class MidvPackage:
         if not isinstance(dataset_root, Path):
             raise TypeError(f"Expected pathlib.Path type, got {type(dataset_root)}")
         package_paths = [p for p in dataset_root.glob("*") if p.is_dir()]
-        return [cls(p) for p in package_paths]
+        out = []
+        for p in tqdm(package_paths):
+          out.append(cls(p))
+        return out
 
     def __init__(self, root: Path):
         for subdir in (self.GT_SUBDIR, self.IMG_SUBDIR):
