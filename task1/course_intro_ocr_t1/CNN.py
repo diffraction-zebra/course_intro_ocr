@@ -34,7 +34,7 @@ class MyCNN(nn.Module):
             nn.Tanh(),
         )
 
-        self.out_layer = nn.Linear(128, n_classes, bias=False)
+        self.out_layer = nn.Linear(128, n_classes, bias=True)
         
     def forward(self, x):
         features = self.nn(x)

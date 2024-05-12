@@ -21,7 +21,7 @@ class MyViT(nn.Module):
         layer = nn.TransformerEncoderLayer(dim, heads, ffn_dim,
                                            batch_first=True, norm_first=True)
         self.encoder = nn.TransformerEncoder(layer, num_layers=layers)
-        self.out_layer = nn.Linear(dim, n_classes)
+        self.out_layer = nn.Linear(dim, n_classes, bias=True)
 
     def forward(self, x):
         x = self.patching(x)  # [batch : kernel * kernel * channels : tokens]
