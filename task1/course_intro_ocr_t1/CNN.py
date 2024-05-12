@@ -2,9 +2,9 @@ import torch
 from torch import nn
 
 
-class MyCNN(nn.Module):
+class CNNClassifier(nn.Module):
     def __init__(self, n_classes):
-        super(MyCNN, self).__init__()
+        super(CNNClassifier, self).__init__()
         self.nn = nn.Sequential(
             nn.LayerNorm((3, 128, 256)),
             nn.Conv2d(3, 8, kernel_size=3, padding=1),
@@ -40,3 +40,26 @@ class MyCNN(nn.Module):
         features = self.nn(x)
         
         return self.out_layer(features)
+
+
+class CNNRecognize(nn.Module):
+    def __init__(self, input_channel, image_size, classes=2):
+        self.classes = classes
+        if classes == 2:
+            output_channel = 1
+        else:
+            output_channel = classes
+        throughput_size = (input_channel, image_size[0], image_size[1])
+        super(CNNRecognize, self).__init__()
+        self.nn = nn.Sequential(
+            nn.LayerNorm(throughput_size),
+            nn.Conv2d(input_channel, input_channel, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.Conv2d(input_channel, input_channel, kernel_size=3, padding=1),
+            nn.LayerNorm(throughput_size),
+            nn.Conv2d(input_channel, output_channel, kernel_size=3, padding=1),
+            nn.ReLU(),
+        )
+
+    def forward(self, x):
+        return self.nn(x)
