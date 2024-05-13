@@ -53,11 +53,11 @@ class CNNRecognize(nn.Module):
         super(CNNRecognize, self).__init__()
         self.nn = nn.Sequential(
             nn.LayerNorm(throughput_size),
-            nn.Conv2d(input_channel, input_channel, kernel_size=3, padding=1),
+            nn.Conv2d(input_channel, input_channel, kernel_size=3, padding=3, dilation=3),
             nn.ReLU(),
-            nn.Conv2d(input_channel, input_channel, kernel_size=3, padding=1),
+            nn.Conv2d(input_channel, input_channel, kernel_size=3, padding=3, dilation=3),
             nn.LayerNorm(throughput_size),
-            nn.Conv2d(input_channel, output_channel, kernel_size=3, padding=1),
+            nn.Conv2d(input_channel, output_channel, kernel_size=3, padding=3, dilation=3),
             nn.ReLU(),
         )
 
